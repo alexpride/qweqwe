@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/jquery.gritter/css/jquery.gritter.css">
+	<meta charset="utf-8">
+	<title>Qwe!!!1</title>
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1 class="page-header">Пример ajax на jquery для _ne_scaju_</h1>
+			<blockquote>Отправка формы с помощью jQuery ajax</blockquote>
+		</div>
+	</div>
+
+	<form method="POST" target="_self" action="/handler.php" id="ajaxForm">
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label>Имя</label>
+				<input type="text" class="form-control" name="name">
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label>Фамилия</label>
+				<input type="text" class="form-control" name="surname">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label>Логин</label>
+				<input type="text" class="form-control" name="login">
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label>Пароль</label>
+				<input type="text" class="form-control" name="password">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<input type="submit" class="btn btn-primary btn-block" value="Отправить">
+		</div>
+	</div>
+
+	</form>
+
+</div>
+
+<!-- Подключаем jQuery -->
+<script type="text/javascript" src="/vendor/jquery/jquery.js"></script>]
+<!-- Подключаем jQuery gritter (плагин для алерта сверху) -->
+<script type="text/javascript" src="/vendor/jquery.gritter/js/jquery.gritter.js"></script>
+
+<script type="text/javascript">
+	
+$('#ajaxForm').submit(function (e) {
+
+	//Блокируем дефолтное поведение отправки формы
+	e.preventDefault();
+	//Получаем объект формы
+	var form = e.target;
+	//Получаем путь к обработчику формы, указанному в атрибуте action целевой формы
+	var handlerAddr = form.action;
+	//Отправляем запрос
+	$.ajax({
+		url: handlerAddr,
+		method: 'POST',
+		dataType: 'text',
+		data: $(form).serialize(),
+		cache: false,
+		//Эта функция сработает если запрос отработает успешно
+		success: function(data) {
+			$.gritter.add({
+				title: 'Запрос завершился!',
+				text: data
+			});
+		},
+		//Эта если завершится неудачей
+		error: function(xhr, error) {
+			$.gritter.add({
+				title: 'Запрос завершился с ошибкой',
+				text: error
+			});
+		},
+		//Эта когда запрос завершится, вне зависимости от его статуса
+		complete: function() {
+			$.gritter.add({
+				title: 'AJAX запрос выполнился!'
+			});
+		}
+	});
+
+});
+
+</script>
+
+</body>
+</html>
